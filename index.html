@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peluncur Aplikasi | Apps-BN</title>
+  <meta name="description" content="Pusat akses dan peluncur aplikasi ekosistem sekolah SMK Bagimu Negeriku">
+
+  <!-- Favicon Grid SVG -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%237a1c28'><rect width='24' height='24' rx='6' fill='%237a1c28'/><circle cx='8' cy='8' r='1.5' fill='white'/><circle cx='12' cy='8' r='1.5' fill='white'/><circle cx='16' cy='8' r='1.5' fill='white'/><circle cx='8' cy='12' r='1.5' fill='white'/><circle cx='12' cy='12' r='1.5' fill='white'/><circle cx='16' cy='12' r='1.5' fill='white'/><circle cx='8' cy='16' r='1.5' fill='white'/><circle cx='12' cy='16' r='1.5' fill='white'/><circle cx='16' cy='16' r='1.5' fill='white'/></svg>">
+
+  <!-- Google Fonts: Inter & Material Symbols Outlined -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind Theme Configuration matching SMK BN Design Tokens -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+          colors: {
+            cream: {
+              50: '#faf7f2',
+              100: '#f4efe6',
+              200: '#ede4d6',
+              300: '#e0d2bd',
+              400: '#cbba9e',
+              500: '#b59f7f',
+            },
+            maroon: {
+              50: '#fdf2f4',
+              100: '#fce4e8',
+              200: '#f8c9d2',
+              300: '#f29eb0',
+              400: '#e66885',
+              500: '#d43b60',
+              600: '#ba2449',
+              700: '#9e1939',
+              800: '#7a1c28',
+              900: '#5c121d',
+              950: '#3a0810',
+            },
+            'sand-border': '#e5ddcf',
+            'sand-border-dark': '#d4c7b5',
+            ink: '#241b18',
+            'canvas-dark': '#141211',
+            'surface-dark': '#241f1c',
+            'dark-border': '#2e2825',
+            'dark-border-subtle': '#38332e',
+            'dark-hover': '#2f2926',
+          },
+          fontSize: {
+            '3xs': ['0.625rem', { lineHeight: '0.75rem' }],
+            '2xs': ['0.6875rem', { lineHeight: '0.875rem' }],
+          },
+          letterSpacing: {
+            mega: '0.25em',
+          },
+          boxShadow: {
+            '2xs': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+            'xs': '0 1px 3px 0 rgba(0, 0, 0, 0.08)',
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Anti-flash Theme Initialization Script -->
+  <script>
+    (function () {
+      try {
+        const storedTheme = localStorage.getItem('bn_theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (storedTheme === 'dark' || (!storedTheme && systemPrefersDark)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  </script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="h-screen w-full overflow-hidden bg-cream-50 text-ink antialiased dark:bg-canvas-dark dark:text-cream-50 transition-colors duration-150">
+
+  <!-- Main Viewport Shell -->
+  <div class="flex h-screen w-full flex-col overflow-hidden bg-cream-50 dark:bg-canvas-dark">
+
+    <!-- Top AppHeader (Fixed outside scrollable container so scrollbar never touches it) -->
+    <header class="shrink-0 z-40 flex h-16 w-full items-center justify-between border-b border-sand-border bg-white/95 px-4 sm:px-6 lg:px-8 backdrop-blur-md shadow-2xs transition-colors dark:border-dark-border dark:bg-surface-dark/95">
+      <!-- Left: Brand Logo & Title -->
+      <div class="flex items-center gap-2.5 min-w-0">
+        <a href="#" class="group inline-flex items-center gap-2.5 transition-opacity hover:opacity-90">
+          <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-maroon-800 text-white shadow-xs transition-transform duration-200 group-hover:scale-105 shrink-0 dark:bg-maroon-700">
+            <span class="material-symbols-outlined text-[20px]">apps</span>
+          </div>
+          <div class="flex flex-col text-left">
+            <span class="text-sm font-bold tracking-tight text-ink dark:text-cream-50">Apps-BN</span>
+            <span class="text-3xs font-semibold tracking-wide text-ink/50 dark:text-cream-400">Portal Aplikasi</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Right: Controls (Theme Toggle Only, Profile Card Removed) -->
+      <div class="flex items-center gap-2 sm:gap-2.5 shrink-0">
+        <button
+          id="themeToggleBtn"
+          type="button"
+          class="group flex h-10 w-10 items-center justify-center rounded-xl border border-sand-border bg-white text-ink/70 transition-all hover:border-sand-border-dark hover:bg-cream-100 hover:text-ink active:scale-95 focus:outline-none focus:ring-2 focus:ring-maroon-700/30 cursor-pointer box-border shrink-0 dark:border-dark-border dark:bg-surface-dark dark:text-cream-200 dark:hover:bg-dark-hover"
+          aria-label="Beralih ke mode gelap atau terang"
+          title="Ganti Tema"
+        >
+          <span
+            id="themeToggleIcon"
+            class="material-symbols-outlined text-[20px] transition-transform duration-200 group-hover:rotate-12 text-maroon-800 dark:text-maroon-400"
+          >
+            dark_mode
+          </span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Scrollable Content Area: Scrollbar starts below the header -->
+    <div id="scrollContainer" class="flex-1 w-full overflow-y-auto flex flex-col justify-between min-h-0">
+
+      <!-- Main Content Container (Full Width, matches original project) -->
+      <main class="w-full flex-1 px-4 py-8 sm:px-6 lg:px-8 space-y-6">
+
+        <!-- 1. Academic Hero Banner (Admin Control Plane Removed) -->
+        <section class="relative overflow-hidden rounded-2xl border border-sand-border bg-gradient-to-br from-maroon-50/70 via-white to-cream-100/60 p-6 sm:p-7 shadow-2xs transition-all duration-200 dark:border-dark-border dark:from-surface-dark dark:via-canvas-dark dark:to-surface-dark">
+          <div class="relative z-10 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div class="w-full min-w-0">
+              <!-- Pulsing Status Badge -->
+              <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-maroon-200 bg-maroon-50 px-3 py-1 text-2xs font-semibold tracking-wide uppercase text-maroon-800 shadow-2xs dark:border-maroon-800/40 dark:bg-maroon-950/40 dark:text-maroon-300">
+                <span class="relative flex h-2 w-2">
+                  <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-maroon-800 opacity-75 dark:bg-maroon-400"></span>
+                  <span class="relative inline-flex h-2 w-2 rounded-full bg-maroon-800 dark:bg-maroon-400"></span>
+                </span>
+                <span>SISTEM INFORMASI TERPADU SMK BAGIMU NEGERIKU</span>
+              </div>
+
+              <!-- Greeting Title (Clickable text to edit name, no extraneous edit icon) -->
+              <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-ink dark:text-cream-50">
+                Selamat Datang, <span id="welcomeUserNameDisplay" class="cursor-pointer hover:opacity-80 transition-opacity" title="Klik untuk mengubah nama">Civitas SMK BN</span>
+              </h1>
+
+              <!-- Ecosystem Description -->
+              <p class="mt-1.5 w-full text-xs sm:text-sm leading-relaxed text-ink/70 dark:text-cream-300/80">
+                Akses seluruh layanan dan modul ekosistem sekolah SMK Bagimu Negeri. Sesi login Anda tersinkronisasi otomatis di seluruh aplikasi sekolah.
+              </p>
+            </div>
+          </div>
+
+          <!-- Minimalist Watermark Icon -->
+          <div
+            class="pointer-events-none absolute -right-3 -bottom-4 z-0 hidden select-none opacity-80 sm:block"
+            aria-hidden="true"
+          >
+            <span class="material-symbols-outlined text-[130px] leading-none text-maroon-800/10 dark:text-maroon-400/10">school</span>
+          </div>
+        </section>
+
+        <!-- 2. Search & Filter Bar Section -->
+        <section class="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
+          <div class="flex items-center gap-2.5">
+            <h2 class="text-sm font-semibold tracking-tight text-ink dark:text-cream-50">
+              Aplikasi Sekolah Terhubung
+            </h2>
+            <span
+              id="appCounterBadge"
+              class="inline-flex items-center rounded-full border border-sand-border bg-cream-100 px-2 py-0 text-3xs font-mono text-ink/70 select-none dark:border-dark-border dark:bg-surface-dark dark:text-cream-300"
+            >
+              11
+            </span>
+          </div>
+
+          <div class="w-full sm:w-72">
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-ink/40 dark:text-cream-400 pointer-events-none select-none"
+                aria-hidden="true"
+              >
+                search
+              </span>
+              <input
+                id="appSearchInput"
+                type="text"
+                placeholder="Cari modul atau aplikasi..."
+                class="h-9 w-full rounded-xl border border-sand-border bg-white pl-9 pr-3 text-xs text-ink placeholder:text-ink/40 shadow-2xs transition-all focus:border-maroon-800 focus:outline-none focus:ring-2 focus:ring-maroon-700/20 dark:border-dark-border dark:bg-surface-dark dark:text-cream-50 dark:placeholder:text-cream-400 dark:focus:border-maroon-600"
+              />
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Application Grid Matrix (Max 4 columns, w-full responsive grid) -->
+        <section>
+          <div
+            id="applicationsGridContainer"
+            class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+          >
+            <!-- Dynamic App Cards injected by app.js -->
+          </div>
+
+          <!-- 4. Deterministic Empty State (Search Not Found) -->
+          <div
+            id="searchEmptyState"
+            class="hidden flex-col items-center justify-center rounded-2xl border border-dashed border-sand-border-dark bg-cream-100/50 p-12 text-center dark:border-dark-border dark:bg-canvas-dark/50"
+          >
+            <div class="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl border border-sand-border bg-white text-ink/40 shadow-2xs dark:border-dark-border dark:bg-surface-dark dark:text-cream-400">
+              <span class="material-symbols-outlined text-[24px]">search_off</span>
+            </div>
+            <h3 class="text-sm font-semibold text-ink dark:text-cream-50">
+              Tidak ada aplikasi yang cocok
+            </h3>
+            <p id="searchEmptyMessage" class="mt-1 max-w-sm text-xs text-ink/60 dark:text-cream-400">
+              Tidak ditemukan aplikasi yang cocok. Coba gunakan kata kunci lain.
+            </p>
+            <button
+              id="resetSearchBtn"
+              type="button"
+              class="mt-3 text-xs font-semibold text-maroon-800 hover:text-maroon-900 dark:text-maroon-400 dark:hover:text-maroon-300 cursor-pointer"
+            >
+              Reset Pencarian
+            </button>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- AppFooter (w-full full-width footer) -->
+      <footer class="w-full shrink-0 border-t border-sand-border bg-white/95 py-6 text-xs text-ink/70 backdrop-blur-md transition-colors dark:border-dark-border dark:bg-surface-dark/95 dark:text-cream-300 mt-12">
+        <div class="flex w-full flex-col items-center justify-between gap-4 px-4 sm:flex-row sm:px-6 lg:px-8">
+          <!-- Footer Brand -->
+          <div class="inline-flex items-center gap-2">
+            <div class="flex h-7 w-7 items-center justify-center rounded-lg bg-maroon-800 text-white shadow-2xs dark:bg-maroon-700">
+              <span class="material-symbols-outlined text-[16px]">apps</span>
+            </div>
+            <div class="flex flex-col text-left">
+              <span class="text-xs font-bold tracking-tight text-ink dark:text-cream-50">Apps-BN</span>
+              <span class="text-3xs font-medium text-ink/50 dark:text-cream-400">Portal Aplikasi</span>
+            </div>
+          </div>
+
+          <!-- Footer Copyright -->
+          <div class="flex items-center text-3xs text-ink/50 dark:text-cream-400">
+            <span>© 2026 SMK Bagimu Negeriku. Hak cipta dilindungi undang-undang.</span>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+
+  </div>
+
+  <!-- Welcome / Name Input Modal Dialog -->
+  <div
+    id="nameModalOverlay"
+    class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/60 backdrop-blur-xs transition-opacity"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modalTitle"
+  >
+    <div
+      class="relative w-full max-w-md rounded-3xl bg-white border border-sand-border p-0 shadow-2xl dark:border-dark-border dark:bg-surface-dark animate-modal-in overflow-hidden"
+    >
+      <!-- Modal Header -->
+      <div class="flex shrink-0 items-center justify-between border-b border-sand-border px-6 py-4 bg-cream-100/70 rounded-t-3xl dark:border-dark-border dark:bg-surface-dark/90">
+        <div class="min-w-0 flex-1 pr-3">
+          <h2 id="modalTitle" class="text-base font-bold text-ink tracking-tight truncate dark:text-cream-50">
+            Personalisasi Portal
+          </h2>
+          <p class="text-xs text-ink/70 mt-0.5 line-clamp-1 dark:text-cream-300">
+            Masukkan nama Anda untuk sapaan di dashboard
+          </p>
+        </div>
+        <button
+          id="closeNameModalBtn"
+          type="button"
+          class="shrink-0 rounded-xl p-1.5 text-ink/40 hover:bg-cream-200/60 hover:text-ink transition-colors cursor-pointer dark:text-cream-400 dark:hover:bg-dark-hover dark:hover:text-cream-100"
+          aria-label="Tutup dialog"
+        >
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <form id="userNameForm" class="p-6 bg-white dark:bg-surface-dark space-y-4">
+        <div>
+          <label for="userNameInput" class="block text-xs font-semibold text-ink dark:text-cream-100 mb-1.5">
+            Nama Lengkap Anda
+          </label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-ink/40 dark:text-cream-400 pointer-events-none">
+              badge
+            </span>
+            <input
+              id="userNameInput"
+              type="text"
+              required
+              autocomplete="name"
+              placeholder="Contoh: Rizqon Maulana, S.Pd."
+              class="h-10 w-full rounded-xl border border-sand-border bg-white pl-9 pr-3 text-xs sm:text-sm text-ink placeholder:text-ink/40 shadow-2xs transition-all focus:border-maroon-800 focus:outline-none focus:ring-2 focus:ring-maroon-700/20 dark:border-dark-border dark:bg-canvas-dark dark:text-cream-50 dark:placeholder:text-cream-400"
+            />
+          </div>
+          <p class="mt-1.5 text-3xs text-ink/50 dark:text-cream-400">
+            Data nama disimpan secara lokal di browser Anda (Local Storage).
+          </p>
+        </div>
+
+        <!-- Modal Actions -->
+        <div class="pt-2 flex items-center justify-end gap-2.5">
+          <button
+            id="cancelNameModalBtn"
+            type="button"
+            class="h-10 px-4 text-xs font-medium rounded-xl border border-sand-border bg-white text-ink/80 hover:bg-cream-100 transition-colors cursor-pointer dark:border-dark-border dark:bg-surface-dark dark:text-cream-200 dark:hover:bg-dark-hover"
+          >
+            Batal
+          </button>
+          <button
+            type="submit"
+            class="h-10 px-5 text-xs font-semibold rounded-xl bg-maroon-800 text-white hover:bg-maroon-900 active:bg-maroon-950 transition-colors shadow-xs cursor-pointer dark:bg-maroon-700 dark:hover:bg-maroon-600"
+          >
+            Simpan Nama
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
